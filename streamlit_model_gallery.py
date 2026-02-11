@@ -105,19 +105,23 @@ st.divider()
 # -----------------------------
 st.subheader("📦 Model Explorer")
 
+if "name" not in filtered_df.columns:
+    st.error(f"'name' column missing. Available columns: {list(filtered_df.columns)}")
+    st.stop()
+
 selected_model = st.selectbox(
     "Select a model to view deep insights",
-    filtered_df["model_name"].dropna().unique()
+    filtered_df["name"].dropna().unique()
 )
 
-model_row = filtered_df[filtered_df.model_name == selected_model].iloc[0]
+model_row = filtered_df[filtered_df.name == selected_model].iloc[0]
 
 colA, colB = st.columns([2, 1])
 
 with colA:
-    st.markdown(f"### {model_row['model_name']}")
+    st.markdown(f"### {model_row['name']}")
     st.write("**Domain:**", model_row['domain'])
-    st.write("**Owner Team:**", model_row['owner_team'])
+    st.write("**Owner Team:**", model_row['model_owner_team'])
     st.write("**Lifecycle Stage:**", model_row['model_stage'])
     st.write("**Monitoring Status:**", model_row['monitoring_status'])
     st.write("**Approval Status:**", model_row['approval_status'])
